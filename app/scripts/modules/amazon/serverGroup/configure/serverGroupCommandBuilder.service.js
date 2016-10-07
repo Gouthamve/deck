@@ -50,6 +50,7 @@ module.exports = angular.module('spinnaker.aws.serverGroupCommandBuilder.service
             },
             targetHealthyDeployPercentage: 100,
             cooldown: 10,
+            spotPrice: 0.5,
             healthCheckType: 'EC2',
             healthCheckGracePeriod: 600,
             instanceMonitoring: false,
@@ -147,6 +148,7 @@ module.exports = angular.module('spinnaker.aws.serverGroupCommandBuilder.service
     }
 
     function buildServerGroupCommandFromExisting(application, serverGroup, mode = 'clone') {
+      console.log(serverGroup);
       var preferredZonesLoader = accountService.getPreferredZonesByAccount('aws');
       var subnetsLoader = subnetReader.listSubnets();
 
@@ -182,6 +184,7 @@ module.exports = angular.module('spinnaker.aws.serverGroupCommandBuilder.service
           freeFormDetails: serverGroupName.freeFormDetails,
           credentials: serverGroup.account,
           cooldown: serverGroup.asg.defaultCooldown,
+          spotPrice: serverGroup.asg.spotPrice,
           healthCheckGracePeriod: serverGroup.asg.healthCheckGracePeriod,
           healthCheckType: serverGroup.asg.healthCheckType,
           terminationPolicies: serverGroup.asg.terminationPolicies,
